@@ -9,8 +9,6 @@ const menuItems = [
   { name: 'Overview', icon: HomeIcon, route: '/' },
   { name: 'School Schedule', icon: AcademicCapIcon, route: '/schoolschedule' },
   { name: 'Personal Schedule', icon: CalendarIcon, route: '/personalschedule' },
-  { name: 'Message', icon: ChatBubbleLeftIcon, route: '/message' },
-  { name: 'Setting', icon: Cog6ToothIcon, route: '/settings' }
 ]
 </script>
 

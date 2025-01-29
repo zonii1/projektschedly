@@ -3,10 +3,14 @@ import { ref, computed } from 'vue'
 import StatCard from './StatCard.vue'
 import CourseCard from './CourseCard.vue'
 import PlanningItem from './PlanningItem.vue'
+import LoginModal from './LoginModal.vue'
 
-const userName = ref('GABRIJEL')
+const userName = ref('')
 const searchQuery = ref('')
 const showAddTaskModal = ref(false)
+const showLoginModal = ref(false)
+const isLoggedIn = ref(false)
+const userEmail = ref('')
 
 const newTask = ref({
   title: '',
@@ -85,13 +89,34 @@ const editTask = (index) => {
   // Remove the old task when editing
   planningItems.value.splice(index, 1)
 }
+
+const handleLogin = () => {
+  showLoginModal.value = true
+}
+
+const closeLoginModal = () => {
+  showLoginModal.value = false
+}
+
+const handleUserLogin = (userData) => {
+  userName.value = userData.name
+  userEmail.value = userData.email
+  isLoggedIn.value = true
+  showLoginModal.value = false
+}
+
+const handleLogout = () => {
+  userName.value = ''
+  userEmail.value = ''
+  isLoggedIn.value = false
+}
 </script>
 
 <template>
   <main class="flex-1 p-8">
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-2xl">
-        Hello <span class="text-blue-500">{{ userName }}</span>, welcome back!
+        Hello <span class="text-blue-500">{{ isLoggedIn ? userName : 'Guest' }}</span>, {{ isLoggedIn ? 'welcome back!' : 'please sign in!' }}
       </h1>
       <div class="flex items-center gap-4">
         <div class="relative">
@@ -111,11 +136,27 @@ const editTask = (index) => {
           </svg>
           <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
         </button>
-        <div class="flex items-center gap-2">
+        <button 
+          v-if="!isLoggedIn"
+          @click="handleLogin"
+          class="flex items-center gap-2 hover:bg-gray-50 p-2 rounded-lg transition-colors"
+        >
           <img src="/src/assets/pfp.jpg" alt="Profile" class="w-10 h-10 rounded-full" />
           <div>
-            <p class="font-semibold">Gabrijel Mijatovic</p>
-            <p class="text-sm text-blue-500">Basic Plan</p>
+            <p class="font-semibold">Sign In</p>
+            <p class="text-sm text-blue-500">Get Started</p>
+          </div>
+        </button>
+        <div v-else class="flex items-center gap-2">
+          <img src="/src/assets/pfp.jpg" alt="Profile" class="w-10 h-10 rounded-full" />
+          <div>
+            <p class="font-semibold">{{ userName }}</p>
+            <button 
+              @click="handleLogout"
+              class="text-sm text-blue-500 hover:text-blue-600"
+            >
+              Sign Out
+            </button>
           </div>
         </div>
       </div>
@@ -257,5 +298,12 @@ const editTask = (index) => {
         </div>
       </div>
     </div>
+
+    <!-- Login Modal -->
+    <LoginModal 
+      v-if="showLoginModal" 
+      @close="closeLoginModal"
+      @login="handleUserLogin"
+    />
   </main>
 </template>
