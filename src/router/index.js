@@ -1,14 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
-// Import komponentu iz components mape
+import Dashboard from '../components/Dashboard.vue';
 import SchoolSchedule from '../components/SchoolSchedule.vue';
+import PersonalSchedule from '../components/PersonalSchedule.vue'; // Import the component
 
 const routes = [
-  {
-    path: '/schoolschedule', // Definiraš rutu
-    name: 'schoolschedule',
-    component: SchoolSchedule, // Povezuješ je s komponentom
-  },
+  { path: '/', name: 'Dashboard', component: Dashboard },
+  { path: '/schoolschedule', name: 'SchoolSchedule', component: SchoolSchedule },
+  { path: '/personalschedule', name: 'PersonalSchedule', component: PersonalSchedule }, // Add the route
 ];
 
 const router = createRouter({
